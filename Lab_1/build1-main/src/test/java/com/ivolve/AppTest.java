@@ -20,7 +20,8 @@ public class AppTest {
             App.main(new String[]{});
 
             // Step 3: Compare output
-            String expectedOutput = "Hello iVolve Trainee\n"; 
+            //String expectedOutput = "Hello iVolve Trainee\n"; 
+            String expectedOutput = "Hello iVolve Trainee" + System.lineSeparator();
             assertEquals(expectedOutput, outContent.toString());
         } finally {
             // Step 4: Restore System.out

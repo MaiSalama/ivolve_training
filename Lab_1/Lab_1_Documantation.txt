@@ -1,0 +1,19 @@
+1. Install JDK 17
+	https://www.youtube.com/watch?v=SQykK40fFds
+2. Install Gradle
+	https://www.youtube.com/watch?v=kHQD1daM1is
+3. Clone source code
+	https://github.com/Ibrahim-Adel15/build1.git
+4. Run the unit test
+	a. check fixed done in build.gradle file
+		Updating build.gradle to use modern Gradle configuration syntax resolved the build failure.
+	b. check fix done in AppTest.java file
+		The unit test initially failed due to a line-ending mismatch on Windows (\r\n vs \n). 
+		The test was updated to use System.lineSeparator() to ensure cross-platform compatibility.
+	c. run -> gradle test
+5. Build the app
+	a. run -> gradle build
+	b. verify by running -> ls build\libs -> expected: ivolve-app.jar
+6. Run the app
+	a. run -> java -jar build\libs\ivolve-app.jar
+	   expected -> Hello iVolve Trainee
