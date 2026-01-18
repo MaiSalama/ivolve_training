@@ -94,4 +94,60 @@ Verification:
 docker ps
 docker ps -a
 ```
+## 🧪 Lab 3 – Single-Stage Docker Build (Build Inside Container)
+
+### What we did
+
+-   Used a **Maven + JDK image**
+    
+-   Built the application **inside the container**
+    
+-   Produced a runnable image in one stage
+    
+# Conclusion
+
+## Comparing image sizes
+
+<img width="906" height="75" alt="image" src="https://github.com/user-attachments/assets/e449bc92-a45c-4f27-a7ad-76dca920f7db" />
+
+### Key takeaway
+
+> Building applications in a single-stage Docker image results in **very large images** because build tools (Maven, source code, caches) are shipped into production.
+
+----------
+
+## 🧪 Lab 4 – Runtime-Only Docker Image (Pre-built JAR)
+
+### What we did
+
+-   Built the application **outside Docker**
+    
+-   Used a **Java runtime-only image**
+    
+-   Copied only the JAR file into the container
+    
+
+### Key takeaway
+
+> Separating build and runtime reduces image size significantly, but requires the build process to happen outside Docker.
+    
+
+----------
+
+## 🧪 Lab 5 – Multi-Stage Docker Build (Best Practice)
+
+### What we did
+
+-   Used **two Docker stages**:
+    
+    -   Build stage (Maven + JDK)
+        
+    -   Runtime stage (JRE only)
+        
+-   Copied the JAR from the build stage into the runtime stage
+    
+
+### Key takeaway
+
+> Multi-stage builds provide the best of both worlds: build inside Docker while keeping the final image small and production-ready.
 
