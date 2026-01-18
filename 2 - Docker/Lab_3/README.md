@@ -1,3 +1,9 @@
+# Lab 3 – Dockerizing a Java Maven Application
+
+## Objective
+
+The goal of this lab is to **containerize a Java application using Docker**, starting from source code, building it inside a container using Maven, running it as a containerized service, and managing the container lifecycle.
+
 ### 1. Clone the Source Code
 
 We cloned an existing Java Maven project from GitHub:
