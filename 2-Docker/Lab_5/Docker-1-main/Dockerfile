@@ -17,7 +17,7 @@ COPY . .
 RUN mvn clean package
 
 #--------------------------------------------#
-#------ Stage 1 : Run the Application -------#
+#------ Stage 2 : Run the Application -------#
 #--------------------------------------------#
 
 #Uses a lightweight Java 17 runtime image
@@ -36,8 +36,6 @@ EXPOSE 8080
 
 #Runs the application when the container starts
 CMD ["java", "-jar", "app.jar"]
-
-
 
 
 
