@@ -89,7 +89,3 @@ You should see **2 running pods**.
 
     kubectl describe resourcequota ivolve-pod-quota -n ivolve
 <img width="1101" height="122" alt="image" src="https://github.com/user-attachments/assets/0d4b3a6a-0f0b-41ee-b82a-884a3de15b0c" />
-
-##  🔹 Step 7: Cleanup
-
-    kubectl delete namespace ivolve
