@@ -49,8 +49,8 @@ Secrets **must be base64 encoded**.
 
 ### Encode values (PowerShell-safe)
 
-    echo -n "ivolve_pass" | base64
-    echo -n "rootpass123" | base64
+    [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("dbpass"))
+    [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("rootpass123"))
 ----------
 
 ## 🔹 Step 3: Create the Secret (sensitive data)
@@ -69,8 +69,8 @@ Secrets **must be base64 encoded**.
     	namespace:  ivolve  
     type:  Opaque  
     data:  
-    	DB_PASSWORD: aXZvbHZlX3Bhc3MNCg==
-    	MYSQL_ROOT_PASSWORD: cm9vdHBhc3MxMjMNCg==
+    	DB_PASSWORD: ZGJwYXNz
+    	MYSQL_ROOT_PASSWORD: cm9vdHBhc3MxMjM=
 
 Apply it:
 
@@ -81,9 +81,11 @@ Verify:
     kubectl get secrets -n ivolve
     kubectl describe secret mysql-secret -n ivolve
 
-  <img width="1146" height="692" alt="image" src="https://github.com/user-attachments/assets/aaca518f-553c-4312-ba0a-22e478291262" />
+  <img width="989" height="277" alt="image" src="https://github.com/user-attachments/assets/aed03613-52e8-4b04-ab35-db02b381e838" />
+
 
 
 ⚠️ Note: Values remain encoded when viewed.
 
 ----------
+
