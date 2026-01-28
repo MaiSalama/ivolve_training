@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  namespace: ivolve
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      tolerations:
+        - key: "node"
+          operator: "Equal"
+          value: "worker"
+          effect: "NoSchedule"
+
+      containers:
+        - name: nodejs
+          image: imaisalama/ivolve-app:latest
+          ports:
+            - containerPort: 3000
+          
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+
+          envFrom:
+            - configMapRef:
+                name: mysql-config
+            - secretRef:
+                name: mysql-secret
+
+          volumeMounts:
+            - name: app-logs
+              mountPath: /app/logs
+
+      volumes:
+        - name: app-logs
+          persistentVolumeClaim:
+            claimName: app-logs-pvc
