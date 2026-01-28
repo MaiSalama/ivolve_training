@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: ivolve
+spec:
+  clusterIP: None   #only difference from normal service
+  selector:
+    app: mysql
+  ports:
+    - port: 3306    #standard port of mysql
+      name: mysql
