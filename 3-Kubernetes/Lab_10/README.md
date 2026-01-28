@@ -12,7 +12,8 @@ Run:
     kubectl version --client
     kind version
     docker --version 
-<img width="879" height="173" alt="image" src="https://github.com/user-attachments/assets/87063166-59a0-42ab-af30-b12c8d1036f6" />
+<img width="689" height="189" alt="image" src="https://github.com/user-attachments/assets/a37b41e8-f5c2-4c76-8084-8d608418d488" />
+
 
 ## 🔹 Step 1: Create a KinD cluster with **2 worker nodes**
 
@@ -32,14 +33,14 @@ Create the cluster:
 ✅ This creates:
 -   1 control-plane   
 -   2 worker nodes
-<img width="1320" height="636" alt="image" src="https://github.com/user-attachments/assets/28e65ed6-c369-47de-b7fc-da24c96d408a" />
 
 ----------
 
 ## 🔹 Step 2: Verify nodes
 
     kubectl get nodes
-<img width="821" height="107" alt="image" src="https://github.com/user-attachments/assets/9db5b1a4-5012-4444-9d30-a2e046287472" />
+<img width="1214" height="496" alt="image" src="https://github.com/user-attachments/assets/978cb39d-23e3-44b2-989c-5f51bec2474c" />
+
 
 ## 🔹 Step 3: Taint one worker node
 
@@ -51,7 +52,7 @@ Run:
 ## 🔹 Step 4: Describe node to verify the taint 
     kubectl describe node taint-lab-worker
     
-<img width="1103" height="306" alt="image" src="https://github.com/user-attachments/assets/c5f6964a-6495-416f-80bd-9a9a3a3c9638" />
+<img width="1187" height="382" alt="image" src="https://github.com/user-attachments/assets/f21d3f05-7964-4aaf-809e-7c6074302b01" />
 
 ## 🔹 Step 5: Describe all nodes (comparison)
 
@@ -97,4 +98,5 @@ Verify:
     kind delete cluster --name taint-lab
 
 <img width="946" height="72" alt="image" src="https://github.com/user-attachments/assets/c0a6ba91-79c4-497e-9de2-8dc1946f362a" />
+
 
