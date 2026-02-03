@@ -77,7 +77,10 @@ pipeline {
       steps {
         withKubeConfig([credentialsId: 'k8s-config']) {
           dir('4-CICD/Lab_22/Jenkins_App-main') {
-            sh 'kubectl apply -f deployment.yaml'
+            sh """
+            kubectl apply -f deployment.yaml
+            kubectl apply --validate=false -f deployment.yaml
+            """
           }
         }
       }
