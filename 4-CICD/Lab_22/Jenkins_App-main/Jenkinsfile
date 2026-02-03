@@ -12,13 +12,6 @@ pipeline {
 
   stages {
 
-    stage('Checkout Code') {
-        steps {
-            git branch: 'main',
-            url: 'https://github.com/MaiSalama/ivolve_training.git'
-        }
-}
-
     stage('Run Unit Tests') {
         steps {
             dir('4-CICD/Lab_22/Jenkins_App-main') {
