@@ -13,25 +13,25 @@ pipeline {
   stages {
 
     stage('Run Unit Tests') {
-        steps {
-            dir('4-CICD/Lab_22/Jenkins_App-main') {
-            sh 'mvn test'
-            }
+      steps {
+        dir('4-CICD/Lab_22/Jenkins_App-main') {
+          sh 'mvn test'
         }
-}
+      }
+    }
 
     stage('Build Application') {
-        steps {
-            dir('4-CICD/Lab_22/Jenkins_App-main') {
-            sh 'mvn package -DskipTests'
-            }
+      steps {
+        dir('4-CICD/Lab_22/Jenkins_App-main') {
+          sh 'mvn package -DskipTests'
         }
-}
+      }
+    }
 
     stage('Test Docker Access') {
-        steps {
+      steps {
         sh 'docker ps'
-        }
+      }
     }
 
     stage('Build Docker Image') {
@@ -49,36 +49,36 @@ pipeline {
           usernameVariable: 'DOCKER_USER',
           passwordVariable: 'DOCKER_PASS'
         )]) {
-          sh """
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker push ${IMAGE_NAME}:${IMAGE_TAG}
-          """
+          sh '''
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ${IMAGE_NAME}:${IMAGE_TAG}
+          '''
         }
       }
     }
 
     stage('Delete Local Docker Image') {
       steps {
-        sh """
-        docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
-        """
+        sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
       }
     }
 
     stage('Update Deployment YAML') {
-      steps {
-        sh """
-        sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
-        """
-      }
-    }
+        steps {
+            dir('4-CICD/Lab_22/Jenkins_App-main') {
+            sh """
+            sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+            """
+             }
+        }
+}
 
     stage('Deploy to Kubernetes') {
       steps {
         withKubeConfig([credentialsId: 'k8s-config']) {
-          sh """
-          kubectl apply -f deployment.yaml
-          """
+          dir('4-CICD/Lab_22/Jenkins_App-main') {
+            sh 'kubectl apply -f deployment.yaml'
+          }
         }
       }
     }
