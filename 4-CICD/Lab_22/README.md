@@ -28,6 +28,11 @@ Create a **Jenkins Declarative Pipeline** that automates the full application li
 
 ## Step 6: Write Jenkinsfile
 
+## Step 7: Run Pipeline
+<img width="1917" height="862" alt="image" src="https://github.com/user-attachments/assets/ca08fca2-82df-4fc7-8e3c-a0245d5f0fed" />
+
+
+
 
 
 
