@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  tools {
+    maven 'maven-3'
+  }
+
   environment {
     IMAGE_NAME = "dockerhubusername/jenkins-app"
     IMAGE_TAG  = "${BUILD_NUMBER}"
