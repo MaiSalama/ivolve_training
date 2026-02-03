@@ -1,0 +1,90 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE_NAME = "dockerhubusername/jenkins-app"
+    IMAGE_TAG  = "${BUILD_NUMBER}"
+  }
+
+  stages {
+
+    stage('Checkout Code') {
+      steps {
+        git 'https://github.com/Ibrahim-Adel15/Jenkins_App.git'
+      }
+    }
+
+    stage('Run Unit Tests') {
+      steps {
+        sh 'mvn test'
+      }
+    }
+
+    stage('Build Application') {
+      steps {
+        sh 'mvn package -DskipTests'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        sh """
+        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+        """
+      }
+    }
+
+    stage('Push Image to Docker Hub') {
+      steps {
+        withCredentials([usernamePassword(
+          credentialsId: 'dockerhub-creds',
+          usernameVariable: 'DOCKER_USER',
+          passwordVariable: 'DOCKER_PASS'
+        )]) {
+          sh """
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push ${IMAGE_NAME}:${IMAGE_TAG}
+          """
+        }
+      }
+    }
+
+    stage('Delete Local Docker Image') {
+      steps {
+        sh """
+        docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
+        """
+      }
+    }
+
+    stage('Update Deployment YAML') {
+      steps {
+        sh """
+        sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+        """
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        withKubeConfig([credentialsId: 'k8s-config']) {
+          sh """
+          kubectl apply -f deployment.yaml
+          """
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      echo 'Pipeline execution finished'
+    }
+    success {
+      echo 'Application deployed successfully'
+    }
+    failure {
+      echo 'Pipeline failed – check logs'
+    }
+  }
+}
