@@ -28,10 +28,12 @@ pipeline {
 }
 
     stage('Build Application') {
-      steps {
-        sh 'mvn package -DskipTests'
-      }
-    }
+        steps {
+            dir('4-CICD/Lab_22/Jenkins_App-main') {
+            sh 'mvn package -DskipTests'
+            }
+        }
+}
 
     stage('Build Docker Image') {
       steps {
