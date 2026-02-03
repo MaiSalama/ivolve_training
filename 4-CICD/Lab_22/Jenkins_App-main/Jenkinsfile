@@ -6,7 +6,7 @@ pipeline {
   }
 
   environment {
-    IMAGE_NAME = "dockerhubusername/jenkins-app"
+    IMAGE_NAME = "imaisalama/jenkins-app"
     IMAGE_TAG  = "${BUILD_NUMBER}"
   }
 
@@ -40,12 +40,12 @@ pipeline {
         sh 'docker ps'
         }
     }
-    
+
     stage('Build Docker Image') {
       steps {
-        sh """
-        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-        """
+        dir('4-CICD/Lab_22/Jenkins_App-main') {
+          sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+        }
       }
     }
 
