@@ -1,0 +1,65 @@
+@Library('ci-lib') _
+
+pipeline {
+  agent { label 'docker' }
+
+  environment {
+    APP_DIR    = '4-CICD/Lab_23/Jenkins_App'
+    IMAGE_NAME = 'imaisalama/jenkins-app'
+    IMAGE_TAG  = "${BUILD_NUMBER}"
+  }
+
+  stages {
+
+    stage('RunUnitTest') {
+      steps {
+        runUnitTest(APP_DIR)
+      }
+    }
+
+    stage('BuildApp') {
+      steps {
+        buildApp(APP_DIR)
+      }
+    }
+
+    stage('BuildImage') {
+      steps {
+        buildImage(APP_DIR, IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('ScanImage') {
+      steps {
+        scanImage(IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('PushImage') {
+      steps {
+        pushImage(IMAGE_NAME, IMAGE_TAG, 'dockerhub-creds')
+      }
+    }
+
+    stage('RemoveImageLocally') {
+      steps {
+        removeImageLocally(IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('DeployOnK8s') {
+      steps {
+        deployOnK8s(APP_DIR)
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'CI/CD pipeline completed successfully'
+    }
+    failure {
+      echo 'Pipeline failed'
+    }
+  }
+}
