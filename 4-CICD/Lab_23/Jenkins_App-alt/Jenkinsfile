@@ -1,0 +1,33 @@
+@Library('ci-lib') _
+
+pipeline {
+  agent { label 'docker' }
+
+  environment {
+    APP_DIR    = '4-CICD/Lab_23/Jenkins_App-main'
+    IMAGE_NAME = 'imaisalama/jenkins-app-alt'
+    IMAGE_TAG  = 'latest'
+  }
+
+  stages {
+
+    stage('Build App Only') {
+      steps {
+        buildApp(APP_DIR)
+      }
+    }
+
+    stage('Build & Push Image') {
+      steps {
+        buildImage(APP_DIR, IMAGE_NAME, IMAGE_TAG)
+        pushImage(IMAGE_NAME, IMAGE_TAG, 'dockerhub-creds')
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'Alternative pipeline completed successfully'
+    }
+  }
+}
