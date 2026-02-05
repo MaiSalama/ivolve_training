@@ -55,6 +55,14 @@ pipeline {
       }
     }
 
+    stage('Debug – list files') {
+  steps {
+    dir(APP_DIR) {
+      sh 'pwd && ls -la'
+    }
+  }
+}
+
     stage('Update Deployment YAML') {
         steps {
             dir(APP_DIR) {
