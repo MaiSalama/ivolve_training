@@ -68,7 +68,8 @@ pipeline {
 
     stage('DeployOnK8s') {
       steps {
-        deployOnK8s(APP_DIR, IMAGE_NAME, IMAGE_TAG, env.K8S_NAMESPACE)
+          def ns = env.DEPLOY_NAMESPACE   
+          deployOnK8s(APP_DIR, IMAGE_NAME, IMAGE_TAG, ns)
       }
     }
   }
