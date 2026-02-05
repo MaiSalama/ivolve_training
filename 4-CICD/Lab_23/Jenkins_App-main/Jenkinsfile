@@ -37,7 +37,7 @@ pipeline {
 
     stage('PushImage') {
       steps {
-        pushImage(IMAGE_NAME, IMAGE_TAG, 'dockerhub-creds')
+        pushImage(IMAGE_NAME, IMAGE_TAG)
       }
     }
 

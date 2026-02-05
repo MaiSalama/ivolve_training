@@ -1,5 +1,13 @@
 def call(String appDir) {
     dir(appDir) {
-        echo 'Deploy skipped (local cluster not reachable from Jenkins agent)'
+        sh '''
+          echo "Deploying application to Kubernetes..."
+
+          kubectl version --client
+          kubectl cluster-info
+
+          kubectl apply -f deployment.yaml
+          kubectl rollout status deployment/jenkins-app
+        '''
     }
 }
