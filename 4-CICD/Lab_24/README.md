@@ -167,3 +167,14 @@ Verify:
 
 <img width="581" height="292" alt="image" src="https://github.com/user-attachments/assets/3228d0af-f6a2-4df3-a3f5-234c8180c584" />
 
+## Step 6 - Scan repo for jenkins files and run pipelines
+
+<img width="1152" height="847" alt="image" src="https://github.com/user-attachments/assets/07156e3b-311e-426a-b35e-2b8074420d2d" />
+<img width="1581" height="412" alt="image" src="https://github.com/user-attachments/assets/40c59bb3-ab62-4da8-85c0-2e1c56336366" />
+<img width="708" height="258" alt="image" src="https://github.com/user-attachments/assets/df4c02a4-edfd-4557-b3a8-292749393268" />
+
+
+
+
+
+
