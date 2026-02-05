@@ -1,7 +1,7 @@
-def call(String appDir) {
+def call(String appDir, String imageName, String imageTag, String namespace) {
     dir(appDir) {
         sh '''
-          echo "Deploying application to Kubernetes..."
+          echo "Deploying to namespace: ${namespace}"
 
             # sanity checks
             kubectl version --client
@@ -14,8 +14,8 @@ def call(String appDir) {
             grep image deployment.yaml
 
             # apply and wait
-            kubectl apply -f deployment.yaml
-            kubectl rollout status deployment/jenkins-app --timeout=120s
+            kubectl apply -f deployment.yaml -n ${namespace}
+            kubectl rollout status deployment/jenkins-app -n ${namespace} --timeout=120s
         '''
     }
 }

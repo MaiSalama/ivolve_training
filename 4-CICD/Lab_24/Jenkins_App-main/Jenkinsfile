@@ -1,0 +1,84 @@
+@Library('ci-lib') _
+
+pipeline {
+  agent { label 'docker' }
+
+  environment {
+    APP_DIR    = '4-CICD/Lab_24/Jenkins_App-main'
+    IMAGE_NAME = 'imaisalama/jenkins-app'
+    IMAGE_TAG  = "${BUILD_NUMBER}"
+  }
+
+  stages {
+
+    stage('Detect Environment') {
+      steps {
+        script {
+          if (env.BRANCH_NAME == 'dev') {
+            env.K8S_NAMESPACE = 'dev'
+          } else if (env.BRANCH_NAME == 'stag') {
+            env.K8S_NAMESPACE = 'stag'
+          } else if (env.BRANCH_NAME == 'prod') {
+            env.K8S_NAMESPACE = 'prod'
+          } else {
+            error "Unsupported branch: ${env.BRANCH_NAME}"
+          }
+
+          echo "Branch: ${env.BRANCH_NAME}"
+          echo "Namespace: ${env.K8S_NAMESPACE}"
+        }
+      }
+    }
+
+    stage('RunUnitTest') {
+      steps {
+        runUnitTest(APP_DIR)
+      }
+    }
+
+    stage('BuildApp') {
+      steps {
+        buildApp(APP_DIR)
+      }
+    }
+
+    stage('BuildImage') {
+      steps {
+        buildImage(APP_DIR, IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('ScanImage') {
+      steps {
+        scanImage(IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('PushImage') {
+      steps {
+        pushImage(IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('RemoveImageLocally') {
+      steps {
+        removeImageLocally(IMAGE_NAME, IMAGE_TAG)
+      }
+    }
+
+    stage('DeployOnK8s') {
+      steps {
+        deployOnK8s(APP_DIR, IMAGE_NAME, IMAGE_TAG, env.K8S_NAMESPACE)
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "Deployment to ${env.K8S_NAMESPACE} successful 🎉"
+    }
+    failure {
+      echo 'Pipeline failed'
+    }
+  }
+}
