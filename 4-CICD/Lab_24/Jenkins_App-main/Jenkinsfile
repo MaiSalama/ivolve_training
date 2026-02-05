@@ -67,44 +67,47 @@ pipeline {
     }
 
     stage('DeployOnK8s') {
-      steps {
-        script {
-          def ns = env.K8S_NAMESPACE
-          echo "DEBUG: Deploying using namespace = ${ns}"
+  steps {
+    script {
+      def ns = env.K8S_NAMESPACE
 
-          dir(APP_DIR) {
+      if (!ns?.trim()) {
+        error "❌ K8S_NAMESPACE is empty. Check Detect Environment stage."
+      }
 
+      echo "DEBUG: Deploying using namespace = ${ns}"
+
+      dir(APP_DIR) {
         sh """
           set -e
 
-          echo "🚀 Deploying to namespace: ${namespace}"
+          echo "🚀 Deploying to namespace: ${ns}"
 
           # Sanity checks
           kubectl version --client
           kubectl cluster-info
 
           # Ensure namespace exists
-          kubectl get namespace ${namespace} >/dev/null 2>&1 \
-            || kubectl create namespace ${namespace}
+          kubectl get namespace ${ns} >/dev/null 2>&1 || kubectl create namespace ${ns}
 
           # Update image tag
-          sed -i 's|image:.*|image: ${imageName}:${imageTag}|g' deployment.yaml
+          sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
 
           echo "📦 Updated deployment.yaml:"
           grep image deployment.yaml
 
           # Apply manifests
-          kubectl apply -f deployment.yaml -n ${namespace}
+          kubectl apply -f deployment.yaml -n ${ns}
 
           # Wait for rollout
           kubectl rollout status deployment/jenkins-app \
-            -n ${namespace} \
+            -n ${ns} \
             --timeout=120s
         """
-    }
-        }
       }
     }
+  }
+}
   }
 
   post {
