@@ -1,4 +1,9 @@
 def call(String appDir, String imageName, String imageTag, String namespace) {
+    
+    if (!namespace?.trim()) {
+        error "K8S_NAMESPACE is empty. Check Detect Environment stage."
+    }
+    
     dir(appDir) {
         sh '''
           echo "Deploying to namespace: ${namespace}"
