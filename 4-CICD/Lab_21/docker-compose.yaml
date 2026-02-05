@@ -2,20 +2,22 @@ version: '3.8'
 
 services:
   jenkins:
+    build: .                                      # build an image from a docker file in the current directory
     image: jenkins/jenkins:lts
     container_name: jenkins
     ports:
       - "8081:8080"
     volumes:
-      - jenkins-data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins-data:/var/jenkins_home            # jenkins data 
+      - /var/run/docker.sock:/var/run/docker.sock # docker volume to make docker available inside jenkins container 
+                                                  # A communication socket. A live connection to host docker daemon.
+      
     networks:
       - jenkins
-    user: root   # IMPORTANT (needed to access docker.sock)
 
 volumes:
   jenkins-data:
 
 networks:
   jenkins:
-    driver: bridge
+    driver: bridge # apps on the same network can communicate via dns
