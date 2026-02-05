@@ -55,14 +55,6 @@ pipeline {
       }
     }
 
-    stage('Debug – list files') {
-  steps {
-    dir(APP_DIR) {
-      sh 'pwd && ls -la'
-    }
-  }
-}
-
     stage('Update Deployment YAML') {
         steps {
             dir(APP_DIR) {
@@ -74,19 +66,15 @@ pipeline {
 }
 
     stage('Deploy to Kubernetes') {
-      steps {
-        withKubeConfig([credentialsId: 'k8s-config']) {
-        dir(APP_DIR) {
-          sh '''
-            sed -i "s|image:.*|image: imaisalama/jenkins-app:${IMAGE_TAG}|g" deployment.yaml
-            kubectl apply -f deployment.yaml
-            kubectl rollout status deployment/jenkins-app
-          '''
-        }
-      }
+  steps {
+    dir(APP_DIR) {
+      sh '''
+        kubectl apply -f deployment.yaml
+        kubectl rollout status deployment/jenkins-app
+      '''
     }
   }
-  }
+}
 
   post {
     always {
