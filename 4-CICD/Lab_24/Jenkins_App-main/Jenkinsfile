@@ -70,11 +70,6 @@ pipeline {
     stage('DeployOnK8s') {
   steps {
     script {
-      def ns = 
-
-      if (!ns?.trim()) {
-        error "❌ K8S_NAMESPACE is empty. Check Detect Environment stage."
-      }
 
       echo "DEBUG: Deploying using namespace = ${env.K8S_NAMESPACE}"
 
