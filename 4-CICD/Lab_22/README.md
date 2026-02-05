@@ -24,12 +24,13 @@ Create a **Jenkins Declarative Pipeline** that automates the full application li
 ## Step 4: Install kubectl in Jenkins
 
 ## Step 5: Create Jenkins Pipeline
-<img width="1912" height="860" alt="image" src="https://github.com/user-attachments/assets/9f3869f5-3b06-4383-9e1b-c3111acb8c6d" />
+<img width="1331" height="869" alt="image" src="https://github.com/user-attachments/assets/b12567e4-9fc8-4ba3-b0e4-f854e952c4cf" />
 
 ## Step 6: Write Jenkinsfile
 
 ## Step 7: Run Pipeline
 <img width="1917" height="862" alt="image" src="https://github.com/user-attachments/assets/ca08fca2-82df-4fc7-8e3c-a0245d5f0fed" />
+
 
 
 
