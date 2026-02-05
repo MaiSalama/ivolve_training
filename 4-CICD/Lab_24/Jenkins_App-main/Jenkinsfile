@@ -69,7 +69,7 @@ pipeline {
     stage('DeployOnK8s') {
       steps {
         script {
-          def ns = env.DEPLOY_NAMESPACE
+          def ns = env.K8S_NAMESPACE
           echo "DEBUG: Deploying using namespace = ${ns}"
     
           deployOnK8s(APP_DIR, IMAGE_NAME, IMAGE_TAG, ns)
