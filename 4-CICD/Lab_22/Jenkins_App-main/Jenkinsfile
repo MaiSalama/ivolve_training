@@ -4,7 +4,7 @@ pipeline {
   environment {
     IMAGE_NAME = "imaisalama/jenkins-app"
     IMAGE_TAG  = "${BUILD_NUMBER}"
-    APP_DIR    = '4-CICD/Lab_23/Jenkins_App-main'
+    APP_DIR    = '4-CICD/Lab_22/Jenkins_App-main'
   }
 
   stages {
