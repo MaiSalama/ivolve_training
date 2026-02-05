@@ -1,26 +1,40 @@
 def call(String appDir, String imageName, String imageTag, String namespace) {
-    
-    if (!namespace?.trim()) {
-        error "K8S_NAMESPACE is empty. Check Detect Environment stage."
+
+    // HARD FAIL early (Groovy-side)
+    if (namespace == null || namespace.trim().isEmpty()) {
+        error "❌ deployOnK8s: namespace is EMPTY (check Jenkinsfile Detect Environment stage)"
     }
-    
+
+    echo "✅ deployOnK8s received namespace = '${namespace}'"
+
     dir(appDir) {
-        sh '''
-          echo "Deploying to namespace: ${namespace}"
 
-            # sanity checks
-            kubectl version --client
-            kubectl cluster-info
+        sh """
+          set -e
 
-            # update image tag in deployment
-            sed -i "s|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g" deployment.yaml
+          echo "🚀 Deploying to namespace: ${namespace}"
 
-            echo "Updated deployment.yaml:"
-            grep image deployment.yaml
+          # Sanity checks
+          kubectl version --client
+          kubectl cluster-info
 
-            # apply and wait
-            kubectl apply -f deployment.yaml -n ${namespace}
-            kubectl rollout status deployment/jenkins-app -n ${namespace} --timeout=120s
-        '''
+          # Ensure namespace exists
+          kubectl get namespace ${namespace} >/dev/null 2>&1 \
+            || kubectl create namespace ${namespace}
+
+          # Update image tag
+          sed -i 's|image:.*|image: ${imageName}:${imageTag}|g' deployment.yaml
+
+          echo "📦 Updated deployment.yaml:"
+          grep image deployment.yaml
+
+          # Apply manifests
+          kubectl apply -f deployment.yaml -n ${namespace}
+
+          # Wait for rollout
+          kubectl rollout status deployment/jenkins-app \
+            -n ${namespace} \
+            --timeout=120s
+        """
     }
 }
