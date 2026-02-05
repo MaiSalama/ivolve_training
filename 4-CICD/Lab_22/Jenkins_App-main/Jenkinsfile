@@ -4,13 +4,14 @@ pipeline {
   environment {
     IMAGE_NAME = "imaisalama/jenkins-app"
     IMAGE_TAG  = "${BUILD_NUMBER}"
+    APP_DIR    = '4-CICD/Lab_23/Jenkins_App-main'
   }
 
   stages {
 
     stage('Run Unit Tests') {
       steps {
-        dir('4-CICD/Lab_22/Jenkins_App-main') {
+        dir(APP_DIR) {
           sh 'mvn test'
         }
       }
@@ -18,21 +19,16 @@ pipeline {
 
     stage('Build Application') {
       steps {
-        dir('4-CICD/Lab_22/Jenkins_App-main') {
+        dir(APP_DIR) {
           sh 'mvn package -DskipTests'
         }
       }
     }
 
-    stage('Test Docker Access') {
-      steps {
-        sh 'docker ps'
-      }
-    }
 
     stage('Build Docker Image') {
       steps {
-        dir('4-CICD/Lab_22/Jenkins_App-main') {
+        dir(APP_DIR) {
           sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
         }
       }
@@ -61,7 +57,7 @@ pipeline {
 
     stage('Update Deployment YAML') {
         steps {
-            dir('4-CICD/Lab_22/Jenkins_App-main') {
+            dir(APP_DIR) {
             sh """
             sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
             """
@@ -71,7 +67,22 @@ pipeline {
 
     stage('Deploy to Kubernetes') {
   steps {
-    echo 'Deployment skipped: local Kubernetes API not reachable from Jenkins container'
+    withKubeConfig([credentialsId: 'k8s-config']) {
+      dir('4-CICD/Lab_22/Jenkins_App-main') {
+        sh '''
+          echo "Deploying image: imaisalama/jenkins-app:${IMAGE_TAG}"
+
+          # Replace image tag dynamically
+          sed -i "s|image:.*|image: imaisalama/jenkins-app:${IMAGE_TAG}|g" deployment.yaml
+
+          # Apply deployment
+          kubectl apply -f deployment.yaml
+
+          # Verify rollout
+          kubectl rollout status deployment/jenkins-app
+        '''
+      }
+    }
   }
 }
   }
