@@ -25,7 +25,6 @@ pipeline {
       }
     }
 
-
     stage('Build Docker Image') {
       steps {
         dir(APP_DIR) {
@@ -56,25 +55,27 @@ pipeline {
     }
 
     stage('Update Deployment YAML') {
-        steps {
-            dir(APP_DIR) {
-            sh """
+      steps {
+        dir(APP_DIR) {
+          sh """
             sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
-            """
-             }
+          """
         }
-}
+      }
+    }
 
     stage('Deploy to Kubernetes') {
-  steps {
-    dir(APP_DIR) {
-      sh '''
-        kubectl apply -f deployment.yaml
-        kubectl rollout status deployment/jenkins-app
-      '''
+      steps {
+        dir(APP_DIR) {
+          sh '''
+            kubectl apply -f deployment.yaml
+            kubectl rollout status deployment/jenkins-app
+          '''
+        }
+      }
     }
-  }
-}
+
+  } // end stages
 
   post {
     always {
@@ -87,5 +88,5 @@ pipeline {
       echo 'Pipeline failed – check logs'
     }
   }
-}
-}
+
+} // end pipeline
