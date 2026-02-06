@@ -64,7 +64,7 @@ pipeline {
             sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' ../k8s/deployment.yaml
 
             echo "Updated deployment.yaml:"
-            grep image k8s/deployment.yaml
+            grep image ../k8s/deployment.yaml
           """
         }
       }
