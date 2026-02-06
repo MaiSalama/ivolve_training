@@ -5,6 +5,9 @@ pipeline {
     IMAGE_NAME = "imaisalama/jenkins-app"
     IMAGE_TAG  = "${BUILD_NUMBER}"
     APP_DIR    = '4-CICD/Lab_22/Jenkins_App-main'
+    K8S_DIR = '5-ArgoCD/Lab_25/k8s'
+    GIT_USER = 'MaiSalama'
+    GIT_EMAIL = 'imaisalama@gmail.com'
   }
 
   stages {
@@ -64,14 +67,16 @@ pipeline {
       }
     }
 
-    stage('Deploy to Kubernetes') {
+    stage('Commit & Push Manifests') {
       steps {
-        dir(APP_DIR) {
-          sh '''
-            kubectl apply -f deployment.yaml
-            kubectl rollout status deployment/jenkins-app
-          '''
-        }
+        sh """
+          git config user.name "${GIT_USER}"
+          git config user.email "${GIT_EMAIL}"
+
+          git add ${K8S_DIR}/deployment.yaml
+          git commit -m "chore: update image to ${IMAGE_TAG}"
+          git push origin HEAD:main
+        """
       }
     }
 
@@ -85,7 +90,7 @@ pipeline {
       echo 'Application deployed successfully'
     }
     failure {
-      echo 'Pipeline failed – check logs'
+      echo 'Pipeline failed check logs'
     }
   }
 
