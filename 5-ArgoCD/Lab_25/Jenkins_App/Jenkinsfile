@@ -80,9 +80,9 @@ pipeline {
         {
         sh """
           git config user.name "MaiSalama"
-          git config user.email "maisalama@gmail.com"
+          git config user.email "imaisalama@gmail.com"
 
-          git add k8s/deployment.yaml
+          git add ../k8s/deployment.yaml
           git commit -m "chore: update image to ${IMAGE_TAG}" || echo "No changes to commit"
 
           git push https://${GIT_USER}:${GIT_TOKEN}@github.com/MaiSalama/ivolve_training.git HEAD:main
