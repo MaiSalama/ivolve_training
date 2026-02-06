@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: jenkins-app
-          image: imaisalama/jenkins-app:${IMAGE_TAG}
+          image: imaisalama/jenkins-app:13
           ports:
             - containerPort: 8080
