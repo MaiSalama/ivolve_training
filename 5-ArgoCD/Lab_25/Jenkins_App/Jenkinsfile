@@ -61,7 +61,10 @@ pipeline {
       steps {
         dir(APP_DIR) {
           sh """
-            sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+            sed -i 's|image:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
+
+            echo "Updated deployment.yaml:"
+            grep image k8s/deployment.yaml
           """
         }
       }
