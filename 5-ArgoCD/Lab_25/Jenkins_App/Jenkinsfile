@@ -71,13 +71,13 @@ pipeline {
     }
 
     stage('Commit & Push Manifests') {
-  steps {
-    dir('5-ArgoCD/Lab_25') {
-      withCredentials([usernamePassword(
-        credentialsId: 'github-creds',
-        usernameVariable: 'GIT_USER',
-        passwordVariable: 'GIT_TOKEN'
-      )]) {
+      steps {
+        dir(APP_DIR) {
+          withCredentials([usernamePassword(
+            credentialsId: 'github-creds',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_TOKEN')]) 
+        {
         sh """
           git config user.name "MaiSalama"
           git config user.email "maisalama@gmail.com"
@@ -87,9 +87,9 @@ pipeline {
 
           git push https://${GIT_USER}:${GIT_TOKEN}@github.com/MaiSalama/ivolve_training.git HEAD:main
         """
+        }
       }
     }
-  }
 }
 
   } // end stages
