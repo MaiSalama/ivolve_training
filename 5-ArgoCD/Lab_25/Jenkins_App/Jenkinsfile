@@ -4,7 +4,7 @@ pipeline {
   environment {
     IMAGE_NAME = "imaisalama/jenkins-app"
     IMAGE_TAG  = "${BUILD_NUMBER}"
-    APP_DIR    = '4-CICD/Lab_22/Jenkins_App-main'
+    APP_DIR    = '/5-ArgoCD/Lab_25/Jenkins_App'
     K8S_DIR = '5-ArgoCD/Lab_25/k8s'
     GIT_USER = 'MaiSalama'
     GIT_EMAIL = 'imaisalama@gmail.com'
