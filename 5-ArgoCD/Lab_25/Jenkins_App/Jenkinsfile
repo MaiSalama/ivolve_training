@@ -71,17 +71,26 @@ pipeline {
     }
 
     stage('Commit & Push Manifests') {
-      steps {
+  steps {
+    dir('5-ArgoCD/Lab_25') {
+      withCredentials([usernamePassword(
+        credentialsId: 'github-creds',
+        usernameVariable: 'GIT_USER',
+        passwordVariable: 'GIT_TOKEN'
+      )]) {
         sh """
-          git config user.name "${GIT_USER}"
-          git config user.email "${GIT_EMAIL}"
+          git config user.name "MaiSalama"
+          git config user.email "maisalama@gmail.com"
 
-          git add ${K8S_DIR}/deployment.yaml
-          git commit -m "chore: update image to ${IMAGE_TAG}"
-          git push origin HEAD:main
+          git add k8s/deployment.yaml
+          git commit -m "chore: update image to ${IMAGE_TAG}" || echo "No changes to commit"
+
+          git push https://${GIT_USER}:${GIT_TOKEN}@github.com/MaiSalama/ivolve_training.git HEAD:main
         """
       }
     }
+  }
+}
 
   } // end stages
 
