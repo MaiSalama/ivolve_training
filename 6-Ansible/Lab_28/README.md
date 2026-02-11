@@ -12,7 +12,7 @@ We will:
 -   Write a playbook that executes these roles
 -   Verify installations on managed nodes
 
-## 🧱 Step 1: Create Role Skeletons
+## Step 1: Create Role Skeletons
 
 From the control node:
 
@@ -25,7 +25,7 @@ Create roles using `ansible-galaxy`:
     ansible-galaxy role init roles/jenkins
 ----------
 
-## 🐳 Step 2: Docker Role
+## Step 2: Docker Role
 
 ### File: `roles/docker/tasks/main.yml`
 
@@ -33,7 +33,7 @@ Create roles using `ansible-galaxy`:
 
 ----------
 
-## ☸️ Step 3: kubectl Role
+## Step 3: kubectl Role
 
 ### File: `roles/kubectl/tasks/main.yml`
 
@@ -41,7 +41,7 @@ Create roles using `ansible-galaxy`:
 
 ----------
 
-## 🧰 Step 4: Jenkins Role
+## Step 4: Jenkins Role
 
 ### File: `roles/jenkins/tasks/main.yml`
 
@@ -49,7 +49,7 @@ Create roles using `ansible-galaxy`:
 
 ----------
 
-## ▶️ Step 5: Create the Role-Based Playbook
+## Step 5: Create the Role-Based Playbook
 
 ### File: `playbooks/site.yml`
 
@@ -57,7 +57,7 @@ Create roles using `ansible-galaxy`:
 
 ----------
 
-## ▶️ Step 6: Run the Playbook
+## Step 6: Run the Playbook
 
     ansible-playbook -i inventory/hosts.ini playbooks/site.yaml 
 
@@ -66,7 +66,7 @@ Create roles using `ansible-galaxy`:
 
 ----------
 
-## 🔍 Step 7: Verify Installation on Managed Nodes
+## Step 7: Verify Installation on Managed Nodes
 
 ### Docker
 
@@ -87,4 +87,5 @@ Create roles using `ansible-galaxy`:
     ansible managed_nodes -i inventory/hosts.ini -m command -a "systemctl status jenkins"
 
 <img width="1918" height="854" alt="image" src="https://github.com/user-attachments/assets/57d456c2-807d-4605-bca8-b58020664660" />
+
 
