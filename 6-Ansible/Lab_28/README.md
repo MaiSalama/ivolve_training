@@ -1,4 +1,4 @@
-# 📘 Lab 28: Structured Configuration Management with Ansible Roles
+# Lab 28: Structured Configuration Management with Ansible Roles
 
 ## 🎯 Lab Objective
 
@@ -87,5 +87,6 @@ Create roles using `ansible-galaxy`:
     ansible managed_nodes -i inventory/hosts.ini -m command -a "systemctl status jenkins"
 
 <img width="1918" height="854" alt="image" src="https://github.com/user-attachments/assets/57d456c2-807d-4605-bca8-b58020664660" />
+
 
 
